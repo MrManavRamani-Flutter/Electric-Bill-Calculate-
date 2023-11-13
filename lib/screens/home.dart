@@ -8,6 +8,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  TextEditingController unitC = TextEditingController();
+  TextEditingController rateC = TextEditingController();
+  double unit = 0.0;
+  double rate = 0.0;
+  double res = 0.0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,11 +60,22 @@ class _HomePageState extends State<HomePage> {
             height: 20,
           ),
           // Text Field of Unit....................................
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 28),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 28),
             child: TextField(
+              controller: unitC,
+              onTap: () {
+                unitC.clear();
+                rateC.clear();
+                unit = 0.00;
+                setState(() {});
+              },
+              onChanged: (val) {
+                unit = double.parse(val);
+                setState(() {});
+              },
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 prefixIcon: Icon(
                   Icons.double_arrow_outlined,
                   color: Colors.black45,
@@ -91,11 +108,20 @@ class _HomePageState extends State<HomePage> {
             height: 20,
           ),
           // Text Field of Rate.................................
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 28),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 28),
             child: TextField(
+              controller: rateC,
+              onTap: () {
+                rate = 0.00;
+                setState(() {});
+              },
+              onChanged: (val) {
+                rate = double.parse(val);
+                setState(() {});
+              },
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 prefixIcon: Icon(
                   Icons.double_arrow_outlined,
                   color: Colors.black45,
@@ -111,28 +137,71 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           const SizedBox(
-            height: 60,
+            height: 30,
           ),
           // Button Calculate....................................
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 28),
-            height: 50,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.green,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: () {
+                unitC.clear();
+                rateC.clear();
+                res = 0.00;
+                unit = 0.00;
+                rate = 0.00;
+                setState(() {});
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 28),
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.green,
+                ),
+                child: const Center(
+                  child: Text(
+                    'Clear',
+                    style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
             ),
-            child: const Center(
-              child: Text(
-                'Calculate',
-                style: TextStyle(
-                    fontSize: 25,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: () {
+                res = unit * rate;
+                unitC.clear();
+                rateC.clear();
+                unit = 0.00;
+                rate = 0.00;
+                setState(() {});
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 28),
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.green,
+                ),
+                child: const Center(
+                  child: Text(
+                    'Calculate',
+                    style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
             ),
           ),
           const SizedBox(
-            height: 60,
+            height: 40,
           ),
           // Total Of Bill....................................
           Container(
@@ -142,22 +211,23 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: Colors.green, width: 0.8),
             ),
-            child: const Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   'Total Bill',
                   style: TextStyle(
                       fontSize: 22,
                       color: Colors.black54,
                       fontWeight: FontWeight.w400),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
-                  'Rs. 0.00',
-                  style: TextStyle(
+                  // Size of after point value fix......
+                  'Rs. ${res.toStringAsFixed(2)}',
+                  style: const TextStyle(
                       fontSize: 25,
                       color: Colors.black54,
                       fontWeight: FontWeight.w700),
